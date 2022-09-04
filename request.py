@@ -31,7 +31,7 @@ def url_analysis():
 
 			headers = {
 			    "Accept": "application/json",
-			    "x-apikey": "8dbdf96716379ba0a7ebca3082cca1bc0b9c8f131a239f0511d975ce78f4961f"
+			    "x-apikey": ""
 			    }
 
 			response = requests.get(url, headers=headers)
