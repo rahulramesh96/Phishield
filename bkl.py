@@ -16,7 +16,7 @@ for url in lines:
     print(url)
 
 
-    api_key = ""
+    api_key = "3c62f73863cb05b103768d181418575f091e74d70a4b04e12bda4c4ad9761ca3"
 
     with virustotal_python.Virustotal(api_key) as vtotal:
         try:
@@ -31,7 +31,8 @@ for url in lines:
                 # add_text = "This text will be added to the file"
                 print(report.data, file=external_file)
 
-                data = external_file.read()
+                data = external_file.readline()
+
 
                 # get number of occurrences of the substring in the string
                 phishing_occurrences = data.count("'result': 'phishing'")
@@ -39,6 +40,7 @@ for url in lines:
 
                 print('No. of Vendors flagged as Phishing :', phishing_occurrences)
                 print('No. of Vendors flagged as Malicious :', malicious_occurrences)
+                print()
                 external_file.close()
 
         except virustotal_python.VirustotalError as err:
