@@ -11,8 +11,6 @@ def url_analysis():
 	filename1 = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 	sys.stdout = open(filename1 + '.csv', 'w')
 
-
-
 	f = open('read.txt')
 	domain = f.readlines()
 	count = 0
