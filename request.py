@@ -16,43 +16,67 @@ def url_analysis():
 	f = open('read.txt')
 	domain = f.readlines()
 	count = 0
-	print(domain[count])
 
-
-	while(domain[count]!=0):
+	while(True):
 		try:
 
-			id = urlsafe_b64encode(domain[count].encode()).decode().strip("=")
-			print(id)
+			#### URL Sanitising block ####
+			print('Original URL:\t\t\t ',domain[count])
+
+
+			if('hxxp' in domain[count]):
+				domain[count] = domain[count].replace("hxxp","http")
+				if('[' or ']' in domain[count]):
+					domain[count] = domain[count].replace("[","").replace("]","")	
+
+
+			elif('hXXp' in domain[count]):
+				domain[count] = domain[count].replace("hXXp","http")
+				if('[' or ']' in domain[count]):
+					domain[count] = domain[count].replace("[","").replace("]","")	
+
+
+			elif('hxxps' in domain[count]):
+				domain[count] = domain[count].replace("hxxps","https")
+				if('[' or ']' in domain[count]):
+					domain[count] = domain[count].replace("[","").replace("]","")		
+
 			
+			elif('hXXps' in domain[count]):
+				domain[count] = domain[count].replace("hXXps","https")
+				if('[' or ']' in domain[count]):
+					domain[count] = domain[count].replace("[","").replace("]","")				
+
+
+			id = urlsafe_b64encode(domain[count].encode()).decode().strip("=")
 
 			url = "https://www.virustotal.com/api/v3/urls/"+id
-			print(url)
+
 
 			headers = {
 			    "Accept": "application/json",
-			    "x-apikey": ""
+			    "x-apikey": "56420e41fe248837147f9320fc7150aad2a8aeac7f3e13c7d2e3c8bfc91bae9e"
 			    }
 
-			response = requests.get(url, headers=headers)
-			print(response.text)
-			
+			response = requests.get(url, headers=headers)		
 
-			
+
 			phishing_occurrences = response.text.count('"result": "phishing"')
 			malicious_occurrences = response.text.count('"result": "malicious"')
 			suspicious_occurrences = response.text.count('"result": "suspicious"')
+			malware_occurrences = response.text.count('"result": "malware"')
 
 			print('website:\t\t\t\t' ,domain[count])
 			print('No. of Vendors flagged as Phishing :\t\t', phishing_occurrences)
 			print('No. of Vendors flagged as Malicious :\t\t', malicious_occurrences)
 			print('No. of Vendors flagged as Suspicious :\t\t', suspicious_occurrences)
+			print('No. of Vendors flagged as Malware :\t\t\t', malware_occurrences)
 			print()
 			print()
 	
-			with open(filename1+'.csv', "r+") as external_file:
-				print(response.text, file=external_file)
-				count+=1
+			# with open(filename1+'.csv', "r+") as external_file:
+			# 	print(response.text, file=external_file)
+			count+=1
 
 			
 		except virustotal_python.VirustotalError as err:
